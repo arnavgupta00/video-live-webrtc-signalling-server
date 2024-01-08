@@ -96,6 +96,10 @@ const handleJoinRoom = (ws, data) => {
       list: listCPY,
     }));
     ws.send(JSON.stringify({
+      type: 'initialClientList',
+      list: listCPY,
+    }));
+    ws.send(JSON.stringify({
       type: 'allUsers',
       payload: rooms[roomId],
     }));
