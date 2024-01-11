@@ -255,36 +255,3 @@ server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-
-// // Join Room Message
-// {
-//   "type": "joinRoom",
-//   "roomId": "room123",
-//   "userId": "user123"
-// }
-
-// // Offer Message
-// {
-//   "type": "offer",
-//   "target": "targetUserId",
-//   "sdp": { /* SDP information */ }
-// }
-
-// // Answer Message
-// {
-//   "type": "answer",
-//   "target": "targetUserId",
-//   "sdp": { /* SDP information */ }
-// }
-
-// // Ice Candidate Message
-// {
-//   "type": "iceCandidate",
-//   "target": "targetUserId",
-//   "candidate": { /* ICE candidate information */ }
-// }
-
-// // Disconnect Message
-// {
-//   "type": "disconnect"
-// }
