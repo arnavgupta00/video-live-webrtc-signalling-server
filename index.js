@@ -33,7 +33,7 @@ const roomListInitiator = () => {
   
 };
 
-roomListInitiator();
+
 wss.on('connection', (ws) => {
 
   ws.on('message', (message) => {
@@ -84,7 +84,7 @@ const generateClientId = () => {
 
 const handleJoinRoom = (ws, data) => {
   const { roomId, userId } = data;
-
+  roomListInitiator();
   // add the client to the room
   if (!rooms[roomId]) {
     ws.send(JSON.stringify({
