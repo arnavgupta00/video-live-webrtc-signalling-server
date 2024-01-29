@@ -10,6 +10,30 @@ const PORT = process.env.PORT || 3000;
 
 const rooms = {};
 const rooomClients = {};
+var roomList = [
+  "Room1",
+  "Room2",
+  "Room3",
+  "Room4",
+  "Room5",
+  "Room6",
+  "Room7",
+  "Room8",
+  "Room9",
+  "Room10",
+];
+
+const roomListInitiator = () => { 
+  roomList.forEach(roomId => {
+    if (!rooms[roomId]) {
+      rooms[roomId] = [];
+      rooomClients[roomId] = []
+    }
+  });
+  
+};
+
+roomListInitiator();
 wss.on('connection', (ws) => {
 
   ws.on('message', (message) => {
