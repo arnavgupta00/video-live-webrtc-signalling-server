@@ -23,15 +23,7 @@ var roomList = [
   "Room10",
 ];
 
-const roomListInitiator = () => { 
-  roomList.forEach(roomId => {
-    if (!rooms[roomId]) {
-      rooms[roomId] = [];
-      rooomClients[roomId] = []
-    }
-  });
-  
-};
+
 
 
 wss.on('connection', (ws) => {
@@ -84,13 +76,20 @@ const generateClientId = () => {
 
 const handleJoinRoom = (ws, data) => {
   const { roomId, userId } = data;
-  roomListInitiator();
+  
   // add the client to the room
-  if (!rooms[roomId]) {
+  if (!rooms[roomId] ) {
+    console.log(roomId)
     ws.send(JSON.stringify({
       type: 'error',
       payload: "roomDNE",
     }));
+  }else if(roomList.includes(roomId)){
+    console.log(roomId)+" is in roomList"
+    if (!rooms[roomId]) {
+      rooms[roomId] = [];
+      rooomClients[roomId] = []
+    }
   } else {
     const clientId = generateClientId();
     ws.roomId = roomId;
@@ -278,4 +277,3 @@ const handleDisconnect = (ws) => {
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
