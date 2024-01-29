@@ -11,16 +11,16 @@ const PORT = process.env.PORT || 3000;
 const rooms = {};
 const rooomClients = {};
 var roomList = [
-  "Room1",
-  "Room2",
-  "Room3",
-  "Room4",
-  "Room5",
-  "Room6",
-  "Room7",
-  "Room8",
-  "Room9",
-  "Room10",
+  "roomRoom1",
+  "roomRoom2",
+  "roomRoom3",
+  "roomRoom4",
+  "roomRoom5",
+  "roomRoom6",
+  "roomRoom7",
+  "roomRoom8",
+  "roomRoom9",
+  "roomRoom10",
 ];
 
 
