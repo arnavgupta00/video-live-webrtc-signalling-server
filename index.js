@@ -79,7 +79,10 @@ const handleJoinRoom = (ws, data) => {
       rooms[roomId] = [];
       rooomClients[roomId] = [];
     }
-  } else if (!rooms[roomId]) {
+  }
+
+  
+  if (!rooms[roomId]) {
     console.log(roomId);
     ws.send(
       JSON.stringify({
