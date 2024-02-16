@@ -73,7 +73,7 @@ const handleJoinRoom = (ws, data) => {
   const { roomId, userId } = data;
 
   // add the client to the room
-  if (roomList.includes(roomId)) {
+  if (roomList.includes(roomId) || "temp" || 1 == 1) {
     console.log(roomId) + " is in roomList";
     if (!rooms[roomId]) {
       rooms[roomId] = [];
