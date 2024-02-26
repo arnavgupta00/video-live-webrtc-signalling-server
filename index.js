@@ -252,6 +252,7 @@ const handleChat = (ws, data) => {
           message: data.message,
           senderID: ws.id,
           senderName: data.senderName,
+          userType: data.userType,
         })
       );
       console.log(`CHAT SENT FROM ${ws.id} TO ${client.id}`, data);
