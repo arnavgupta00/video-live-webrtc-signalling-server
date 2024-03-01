@@ -51,6 +51,9 @@ wss.on("connection", (ws) => {
       case "chat":
         handleChat(ws, data);
         break;
+      case "giftChat":
+        handleGiftChat(ws, data);
+        break;
       default:
         console.log(message);
     }
@@ -81,7 +84,6 @@ const handleJoinRoom = (ws, data) => {
     }
   }
 
-  
   if (!rooms[roomId]) {
     console.log(roomId);
     ws.send(
@@ -256,6 +258,26 @@ const handleChat = (ws, data) => {
         })
       );
       console.log(`CHAT SENT FROM ${ws.id} TO ${client.id}`, data);
+    }
+  });
+};
+
+const handleGiftChat = (ws, data) => {
+  const clientsArray = Array.from(wss.clients);
+  rooms[ws.roomId].forEach((user) => {
+    const client = clientsArray.find((client) => client.id === user.id);
+    if (client.id !== ws.id && client.readyState === WebSocket.OPEN) {
+      client.send(
+        JSON.stringify({
+          type: "giftChat",
+          message: data.message,
+          giftNo: data.giftNo,
+          senderID: ws.id,
+          senderName: data.senderName,
+          userType: data.userType,
+        })
+      );
+      console.log(`GIFT CHAT SENT FROM ${ws.id} TO ${client.id}`, data);
     }
   });
 };
