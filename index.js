@@ -54,7 +54,7 @@ wss.on("connection", (ws) => {
       case "giftChat":
         handleGiftChat(ws, data);
         break;
-      case "streamerAdd":
+      case "streamerJoinRoom":
         handleStreamerAdd(ws, data);
         break;
       case "roomPasswordAdd":
