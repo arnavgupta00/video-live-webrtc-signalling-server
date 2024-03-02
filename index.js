@@ -54,6 +54,11 @@ wss.on("connection", (ws) => {
       case "giftChat":
         handleGiftChat(ws, data);
         break;
+      case "streamerAdd":
+        handleStreamerAdd(ws, data);
+        break;
+      case "roomPasswordAdd":
+        handleRoomPasswordAdd(ws, data);
       default:
         console.log(message);
     }
@@ -70,6 +75,23 @@ wss.on("connection", (ws) => {
 
 const generateClientId = () => {
   return Math.random().toString(36).substring(7);
+};
+
+const handleRoomPasswordAdd = (ws, data) => {
+  const { roomId, userId, roomPassword } = data;
+
+  if (rooms[roomId]) {
+    rooms[roomId].password = roomPassword;
+
+    console.log(rooms[roomId]);
+  } else {
+    ws.send(
+      JSON.stringify({
+        type: "error",
+        payload: "roomDNE",
+      })
+    );
+  }
 };
 
 const handleJoinRoom = (ws, data) => {
@@ -136,6 +158,74 @@ const handleJoinRoom = (ws, data) => {
         payload: rooms[roomId],
       })
     );
+  }
+};
+const handleStreamerAdd = (ws, data) => {
+  const { roomId, userId, roomPassword } = data;
+
+  // add the client to the room
+  if (roomList.includes(roomId) || "temp" || 1 == 1) {
+    console.log(roomId) + " is in roomList";
+    if (!rooms[roomId]) {
+      rooms[roomId] = [];
+      rooomClients[roomId] = [];
+    }
+  }
+
+  if (!rooms[roomId]) {
+    console.log(roomId);
+    ws.send(
+      JSON.stringify({
+        type: "error",
+        payload: "roomDNE",
+      })
+    );
+  } else {
+    if (rooms[roomId].password === roomPassword) {
+      const clientId = generateClientId();
+      ws.roomId = roomId;
+      rooms[roomId].push({ id: clientId, userId });
+      ws.id = clientId;
+
+      // notify others in the same room about the new user
+      const clientsArray = Array.from(wss.clients);
+
+      rooms[roomId].forEach((user) => {
+        rooomClients[roomId].push(user.id);
+        const client = clientsArray.find((client) => client.id === user.id);
+        if (client && client.readyState === WebSocket.OPEN) {
+          client.send(
+            JSON.stringify({
+              type: "userJoined",
+              payload: { userId, socketId: clientId, allUsers: rooms[roomId] },
+            })
+          );
+        }
+      });
+      //
+      // notify the new user about existing users
+
+      const listCPY = rooomClients[roomId].filter((id) => id !== ws.id);
+
+      ws.send(
+        JSON.stringify({
+          type: "clientList",
+          list: listCPY,
+        })
+      );
+      ws.send(
+        JSON.stringify({
+          type: "initialClientList",
+          list: listCPY,
+        })
+      );
+      ws.send(
+        JSON.stringify({
+          type: "allUsers",
+          payload: rooms[roomId],
+        })
+      );
+    }
   }
 };
 
